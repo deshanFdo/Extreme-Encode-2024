@@ -1,0 +1,52 @@
+#!/bin/python3
+
+import math
+import os
+import random
+import re
+import sys
+
+#
+# Complete the 'Rectangle_Renaissance' function below.
+#
+# The function is expected to return an INTEGER.
+# The function accepts following parameters:
+#  1. INTEGER n
+#  2. INTEGER_ARRAY a
+#
+
+def Rectangle_Renaissance(n, a):
+    stack = []
+    max_area = 0
+    index = 0
+    
+    while index < n:
+        # If this building is higher than the building at the stack's top, push it to the stack
+        if not stack or a[stack[-1]] <= a[index]:
+            stack.append(index)
+            index += 1
+        else:
+            # Pop the top
+            top_of_stack = stack.pop()
+            # Calculate the area with a[top_of_stack] as the smallest (or minimum height) building
+            area = (a[top_of_stack] *
+                    ((index - stack[-1] - 1) if stack else index))
+            # Update max_area, if needed
+            max_area = max(max_area, area)
+    
+    # Now, pop the remaining buildings from stack and calculate area
+    while stack:
+        top_of_stack = stack.pop()
+        area = (a[top_of_stack] *
+                ((index - stack[-1] - 1) if stack else index))
+        max_area = max(max_area, area)
+    
+    return max_area
+
+if __name__ == '__main__':
+    fptr = open(os.environ['OUTPUT_PATH'], 'w')
+    n = int(input().strip())
+    arr = list(map(int, input().rstrip().split()))
+    k = Rectangle_Renaissance(n, arr)
+    fptr.write(str(k) + '\n')
+    fptr.close()
