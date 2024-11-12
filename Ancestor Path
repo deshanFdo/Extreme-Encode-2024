@@ -1,0 +1,16 @@
+def shortest_ancestral_path(a, b):
+    steps = 0
+    while a != b:
+        if a > b:
+            a //= 2
+        else:
+            b //= 2
+        steps += 1
+    return steps
+
+if __name__ == '__main__':
+    import sys
+    input = sys.stdin.read().strip()
+    a, b = map(int, input.split())
+    result = shortest_ancestral_path(a, b)
+    print(result)
